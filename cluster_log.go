@@ -18,11 +18,10 @@ func GetRecentLogs(c *Client) ([]LogEntry, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/cluster/log", nil )
   if err != nil {
-	  return logs, err
+    return logs, err
   } else {
     err = dataUnmarshal( rbody, &logs )
 
-    // Any Error parsing json ?
-		return logs, err
+    return logs, err
   }
 }

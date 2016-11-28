@@ -29,8 +29,8 @@ type LxcConfig struct {
   Force                int     // optional - Allow to overwrite existing container.
   Restore              int     // optional - Mark this as restore task.
   Pool                 string  // optional - Add the VM to the specified pool.
-//  IgnoreUnpackErrors   int     // optional - Ignore errors when extracting the template.
-//  SshPublicKeys        string  // optional - Setup public SSH keys (one key per line, OpenSSH format).
+  //  IgnoreUnpackErrors   int     // optional - Ignore errors when extracting the template.
+  //  SshPublicKeys        string  // optional - Setup public SSH keys (one key per line, OpenSSH format).
   Lock                 string  // optional - Lock/unlock the VM. ( enum: migrate|backup|snapshot|rollback )
   Onboot               int     // optional - Specifies whether a VM will be started during system bootup. ( default: 0 )
   Startup              string  // optional - [[order=]\d+][,up=\d+][,down=\d+]
@@ -46,44 +46,44 @@ type LxcConfig struct {
   Description          string  // optional - Container description. Only used on the configuration web interface.
   SearchDomain         string  // optional - Sets DNS search domains for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.
   NameServer           string  // optional - Sets DNS server IP address for a container. Create will automatically use the setting from the host if you neither set searchdomain nor nameserver.
-//  RootFS               string  // [volume=]<volume>[,acl=<1|0>][,quota=<1|0>][,ro=<1|0>][,size=<DiskSize>]
+  //  RootFS               string  // [volume=]<volume>[,acl=<1|0>][,quota=<1|0>][,ro=<1|0>][,size=<DiskSize>]
   Parent               string  // optional - Parent snapshot name. This is used internally, and should not be modified.
 }
 
 // Sets Defaults for the LxcConfig
 func NewLxcConfig(obj *LxcConfig) *LxcConfig {
-	if obj == nil {
-		obj = &LxcConfig{}
-	}
+  if obj == nil {
+    obj = &LxcConfig{}
+  }
 
-	if obj.Storage == "" {
+  if obj.Storage == "" {
     obj.Storage = "local"
-	}
-	if obj.Arch == "" {
+  }
+  if obj.Arch == "" {
     obj.Arch = "amd64"
-	}
-	if obj.Console == 0 {
+  }
+  if obj.Console == 0 {
     obj.Console = 1
-	}
-	if obj.TTY == 0 {
+  }
+  if obj.TTY == 0 {
     obj.TTY = 2
-	}
-	if obj.CpuUnits == 0 {
+  }
+  if obj.CpuUnits == 0 {
     obj.CpuUnits = 1024
-	}
-	if obj.Memory == 0 {
-		obj.Memory = 512
-	}
-	if obj.Swap == 0 {
-		obj.Swap = 512
-	}
-	if obj.HostName == "" {
-		obj.HostName = strconv.Itoa( obj.VMId )
-	}
-//	if obj.RootFS == "" {
-//		obj.RootFS = "local-lvm"
-//	}
-	return obj
+  }
+  if obj.Memory == 0 {
+    obj.Memory = 512
+  }
+  if obj.Swap == 0 {
+    obj.Swap = 512
+  }
+  if obj.HostName == "" {
+    obj.HostName = strconv.Itoa( obj.VMId )
+  }
+  //  if obj.RootFS == "" {
+  //    obj.RootFS = "local-lvm"
+  //  }
+  return obj
 }
 
 type Lxc struct {
@@ -125,7 +125,6 @@ func (ct LxcConfig) DeleteLxc(c *Client) (string, error) {
   } else {
     err = dataUnmarshal( rbody, &tskinfo )
 
-    // Any Error parsing json ?
     return tskinfo, err
   }
 }
@@ -141,13 +140,12 @@ func (ct LxcConfig) CreateLxc(c *Client) (string, error) {
   // POST parameters
   pbody := structToMap(&ct, []string{}, []string{ "Node" } )
 
-	_, rbody, err := c.NewRequest("POST", "/api2/json/nodes/" + ct.Node + "/lxc", pbody )
+  _, rbody, err := c.NewRequest("POST", "/api2/json/nodes/" + ct.Node + "/lxc", pbody )
   if err != nil {
     return tskinfo, err
   } else {
     err = dataUnmarshal( rbody, &tskinfo )
 
-    // Any Error parsing json ?
     return tskinfo, err
   }
 
@@ -160,28 +158,26 @@ func GetAllLxc(c *Client, nodeName string) ([]Lxc, error) {
     return cts, &errorString{ "Node name (Node.Node) is required to get list of containers", }
   }
 
-	_, rbody, err := c.NewRequest("GET", "/api2/json/nodes/" + nodeName + "/lxc", nil )
+  _, rbody, err := c.NewRequest("GET", "/api2/json/nodes/" + nodeName + "/lxc", nil )
   if err != nil {
-	  return cts, err
+    return cts, err
   } else {
     err = dataUnmarshal( rbody, &cts )
 
-    // Any Error parsing json ?
-		return cts, err
+    return cts, err
   }
 }
 
 // Returns all defined cluster nodes
 func GetAllNodes(c *Client) ([]Node, error) {
-	nodes := make([]Node, 0)
+  nodes := make([]Node, 0)
 
-	_, rbody, err := c.NewRequest("GET", "/api2/json/nodes", nil )
+  _, rbody, err := c.NewRequest("GET", "/api2/json/nodes", nil )
   if err != nil {
-	  return nodes, err
+    return nodes, err
   } else {
     err = dataUnmarshal( rbody, &nodes )
 
-    // Any Error parsing json ?
-		return nodes, err
+    return nodes, err
   }
 }

@@ -14,11 +14,10 @@ func GetVersion(c *Client) (Version, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/version", nil )
   if err != nil {
-	  return pvever, err
+    return pvever, err
   } else {
     err = dataUnmarshal( rbody, &pvever )
 
-    // Any Error parsing json ?
-		return pvever, err
+    return pvever, err
   }
 }

@@ -6,7 +6,7 @@ import (
 
 // structure representing Proxmox Group
 type Group struct {
-	GroupId   string   // Required
+  GroupId   string   // Required
   Comment   string   // Optional
 }
 
@@ -20,7 +20,7 @@ func (g Group) CreateGroup(c *Client) error {
   // POST parameters
   pbody := structToMap(&g, []string{}, []string{})
 
-	_, _, err := c.NewRequest("POST", "/api2/json/access/groups", pbody )
+  _, _, err := c.NewRequest("POST", "/api2/json/access/groups", pbody )
   if err != nil {
     return err
   }
@@ -49,7 +49,7 @@ func (g Group) UpdateGroup(c *Client) error {
   }
 
   // POST parameters
-	pbody := url.Values{}
+  pbody := url.Values{}
   pbody.Add( "comment", g.Comment )
 
   _, _, err := c.NewRequest("PUT", "/api2/json/access/groups/" + g.GroupId, pbody )
@@ -66,27 +66,25 @@ func (g Group) GetGroup(c *Client) (Group, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/access/groups/" + g.GroupId, nil )
   if err != nil {
-	  return rg, err
+    return rg, err
   } else {
     err = dataUnmarshal( rbody, &rg )
 
-    // Any Error parsing json ?
-		return rg, err
+    return rg, err
   }
 }
 
 // Gets all defined groups
 func GetAllGroups(c *Client) ([]Group, error) {
-	groups := make([]Group, 0)
+  groups := make([]Group, 0)
 
   // GET parameters
-	_, rbody, err := c.NewRequest("GET", "/api2/json/access/groups", nil )
+  _, rbody, err := c.NewRequest("GET", "/api2/json/access/groups", nil )
   if err != nil {
-	  return groups, err
+    return groups, err
   } else {
     err = dataUnmarshal( rbody, &groups )
 
-    // Any Error parsing json ?
-		return groups, err
+    return groups, err
   }
 }

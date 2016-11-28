@@ -44,10 +44,10 @@ func TestNodesAPI(t *testing.T) {
     Password: "qwerty12",
     Storage: "local-lvm",
     OsTemplate: "local:vztmpl/centos-7-default_20160205_amd64.tar.xz",
-//    Pool       
-//    Onboot     
-//    Startup    
-//    Template: "",
+    //    Pool       
+    //    Onboot     
+    //    Startup    
+    //    Template: "",
     Description: "Test LXC Container",
     //RootFS: "local-lvm,size=8G",
     Arch: "amd64",

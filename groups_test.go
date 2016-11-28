@@ -7,7 +7,7 @@ import (
 
 func TestGroupAPI(t *testing.T) {
   t.Parallel()
-	c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -24,11 +24,11 @@ func TestGroupAPI(t *testing.T) {
   }
 
   // test that we can fetch created groups
-	_, err = (goproxmoxapi.Group{ GroupId: "gr3" }).GetGroup(c)
+  _, err = (goproxmoxapi.Group{ GroupId: "gr3" }).GetGroup(c)
   if err != nil {
     t.Error(err)
   }
-	_, err = (goproxmoxapi.Group{ GroupId: "gr4" }).GetGroup(c)
+  _, err = (goproxmoxapi.Group{ GroupId: "gr4" }).GetGroup(c)
   if err != nil {
     t.Error(err)
   }
@@ -40,7 +40,7 @@ func TestGroupAPI(t *testing.T) {
   }
 
   // test the fact that group updated
-	gr4, err := (goproxmoxapi.Group{ GroupId: "gr4" }).GetGroup(c)
+  gr4, err := (goproxmoxapi.Group{ GroupId: "gr4" }).GetGroup(c)
   if err != nil {
     t.Error(err)
   }
@@ -49,7 +49,7 @@ func TestGroupAPI(t *testing.T) {
   }
 
   // Test number of groups is at least 2
-	gg1, err := goproxmoxapi.GetAllGroups(c)
+  gg1, err := goproxmoxapi.GetAllGroups(c)
   if err != nil {
     t.Log(gg1)
     t.Error(err)
@@ -70,18 +70,18 @@ func TestGroupAPI(t *testing.T) {
   }
 
   // test the fact that both groups are removed
-	_, err = (goproxmoxapi.Group{ GroupId: "gr3" }).GetGroup(c)
+  _, err = (goproxmoxapi.Group{ GroupId: "gr3" }).GetGroup(c)
   if err == nil {
     t.Error(err)
   }
 
-	_, err = (goproxmoxapi.Group{ GroupId: "gr4" }).GetGroup(c)
+  _, err = (goproxmoxapi.Group{ GroupId: "gr4" }).GetGroup(c)
   if err == nil {
     t.Error(err)
   }
 
   // Test number of groups should be 2 less after removal of 2 groups
-	gg2, err := goproxmoxapi.GetAllGroups(c)
+  gg2, err := goproxmoxapi.GetAllGroups(c)
   if err != nil {
     t.Log(gg2)
     t.Error(err)

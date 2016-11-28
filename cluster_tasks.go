@@ -48,12 +48,11 @@ func (tsks TaskEntry) GetTaskStatus(c *Client) (TaskEntry, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/nodes/" + tsks.Node + "/tasks/" + tsks.UpId + "/status", nil )
   if err != nil {
-	  return rts, err
+    return rts, err
   } else {
     err = dataUnmarshal( rbody, &rts )
 
-    // Any Error parsing json ?
-		return rts, err
+    return rts, err
   }
 }
 
@@ -70,12 +69,11 @@ func (tsk TaskEntry) GetTaskLogEntries(c *Client) ([]TaskLogEntry, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/nodes/" + tsk.Node + "/tasks/" + tsk.UpId + "/log", nil )
   if err != nil {
-	  return tasklogs, err
+    return tasklogs, err
   } else {
     err = dataUnmarshal( rbody, &tasklogs )
 
-    // Any Error parsing json ?
-		return tasklogs, err
+    return tasklogs, err
   }
 }
 
@@ -85,11 +83,10 @@ func GetRecentTasks(c *Client) ([]RecentTask, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/cluster/tasks", nil )
   if err != nil {
-	  return tasks, err
+    return tasks, err
   } else {
     err = dataUnmarshal( rbody, &tasks )
 
-    // Any Error parsing json ?
-		return tasks, err
+    return tasks, err
   }
 }

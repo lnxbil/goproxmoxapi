@@ -7,14 +7,14 @@ import (
 
 func TestClusterStatusAPI(t *testing.T) {
   t.Parallel()
-	c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
   }
 
   // test version number of the PVE
-	tasks, err := goproxmoxapi.GetClusterStatus(c)
+  tasks, err := goproxmoxapi.GetClusterStatus(c)
   if err != nil {
     t.Error(err)
   }

@@ -6,8 +6,7 @@ import (
 )
 
 func TestPasswordAPI(t *testing.T) {
-//  t.Parallel()
-	c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -38,29 +37,29 @@ func TestPasswordAPI(t *testing.T) {
   }
 
   // Test connection with initial pass
-	ctu1, err := goproxmoxapi.New("usertotestpass", tu1.Password, "pve", "10.255.0.5")
+  ctu1, err := goproxmoxapi.New("usertotestpass", tu1.Password, "pve", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
   }
-	_, err = goproxmoxapi.GetVersion(ctu1)
+  _, err = goproxmoxapi.GetVersion(ctu1)
   if err != nil {
     t.Error(err)
   }
 
   // Update pass
-	err = pu1.UpdatePassword(c)
+  err = pu1.UpdatePassword(c)
   if err != nil {
     t.Error(err)
   }
 
   // Test connection with new pass
-	cpu1, err := goproxmoxapi.New("usertotestpass", pu1.Password, "pve", "10.255.0.5")
+  cpu1, err := goproxmoxapi.New("usertotestpass", pu1.Password, "pve", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
   }
-	pvever, err := goproxmoxapi.GetVersion(cpu1)
+  pvever, err := goproxmoxapi.GetVersion(cpu1)
   if err != nil {
     t.Error(err)
   }

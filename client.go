@@ -2,9 +2,9 @@
 package goproxmoxapi
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/url"
+  "encoding/json"
+  "net/http"
+  "net/url"
   "crypto/tls"
   "fmt"
   "io/ioutil"
@@ -37,50 +37,50 @@ type errorString struct {
 // tokens - ticket obtain time is being stored as TokenDT, along with Ticket
 // and CSRFPreventionToken
 type Client struct {
-  TargetNode string // URL target node
-  User, Pass, Realm string // Authentication information
+  TargetNode string                  // URL target node
+  User, Pass, Realm string           // Authentication information
   Priviledges map[string]interface{} // User priveleges
-  TokenDT time.Time // Authentication token creation Time
+  TokenDT time.Time                  // Authentication token creation Time
   Ticket, CSRFPreventionToken string // Obtained Authentication tokens
   *http.Client
 }
 
 // creates new PVE client
 func New(username, password, realm, tnode string) (*Client, error) {
-	var csrfpreventiontoken, ticket string
+  var csrfpreventiontoken, ticket string
   var privs map[string]interface{}
 
   // Prepare data for this request
   startt := time.Now()
-	apiUrl := "https://" + tnode + ":8006"
-	resource := "/api2/json/access/ticket"
-	data := url.Values{}
+  apiUrl := "https://" + tnode + ":8006"
+  resource := "/api2/json/access/ticket"
+  data := url.Values{}
   data.Set("username", username + "@" + realm)
   data.Add("password", password)
 
   // Prepare client
-	tr := &http.Transport{ TLSClientConfig: &tls.Config{ InsecureSkipVerify: true }, }
-	client := &http.Client{ Transport: tr }
+  tr := &http.Transport{ TLSClientConfig: &tls.Config{ InsecureSkipVerify: true }, }
+  client := &http.Client{ Transport: tr }
 
   // Prepare URL
-	u, err := url.ParseRequestURI(apiUrl)
-	if err != nil {
+  u, err := url.ParseRequestURI(apiUrl)
+  if err != nil {
     return nil, err
-	}
-	u.Path = resource
-	urlStr := fmt.Sprintf("%v", u)
+  }
+  u.Path = resource
+  urlStr := fmt.Sprintf("%v", u)
 
   // Generate new request
-	r, err := http.NewRequest("POST", urlStr, strings.NewReader( data.Encode()) )
-	if err != nil {
+  r, err := http.NewRequest("POST", urlStr, strings.NewReader( data.Encode()) )
+  if err != nil {
     return nil, err
-	}
+  }
 
   // Request ticket and authorization information
-	resp, err := client.Do(r)
-	if err != nil {
+  resp, err := client.Do(r)
+  if err != nil {
     return nil, err
-	}
+  }
   defer resp.Body.Close()
 
   // Raise error if response status is not 200
@@ -90,30 +90,30 @@ func New(username, password, realm, tnode string) (*Client, error) {
 
   // Obtain tickets from returned body
   body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+  if err != nil {
     return nil, err
-	} else {
+  } else {
     b := []byte( string(body) )
-		var f interface{}
-		err := json.Unmarshal(b, &f)
+    var f interface{}
+    err := json.Unmarshal(b, &f)
 
     if err != nil {
-			return nil, err
-		} else {
-			jsondata := f.(map[string]interface{})["data"].(map[string]interface{})
+      return nil, err
+    } else {
+      jsondata := f.(map[string]interface{})["data"].(map[string]interface{})
       privs = jsondata["cap"].(map[string]interface{})
-			csrfpreventiontoken = jsondata["CSRFPreventionToken"].(string)
-			ticket = jsondata["ticket"].(string)
-		}
-	}
+      csrfpreventiontoken = jsondata["CSRFPreventionToken"].(string)
+      ticket = jsondata["ticket"].(string)
+    }
+  }
 
   // Return resulting Client structure
-	return &Client{
-		tnode,                               // Target node
+  return &Client{
+    tnode,                               // Target node
     username, password, realm, privs,    // User information passed
     startt, ticket, csrfpreventiontoken, // Obtained ticket/token information
-		client,                              // Resulting http.Client structure
-	}, nil
+    client,                              // Resulting http.Client structure
+  }, nil
 }
 
 // unconditionally refreshes API tokens when called
@@ -121,10 +121,10 @@ func (c *Client) RefreshToken() error {
   // This function is encapsulated within NewRequest call prior doing any operation
   c, err := New(c.User, c.Ticket, c.Realm, c.TargetNode)
   if err != nil {
-		return err
-	} else {
-		return nil
-	}
+    return err
+  } else {
+    return nil
+  }
 }
 
 // creates request to PVE API and returns request response code and body for a given call.
@@ -139,18 +139,18 @@ func (c *Client) NewRequest(method, path string, data url.Values) (int, []byte, 
   }
 
   // Prepare URL
-	apiUrl := "https://" + c.TargetNode + ":8006"
-	u, err := url.ParseRequestURI(apiUrl)
-	if err != nil {
+  apiUrl := "https://" + c.TargetNode + ":8006"
+  u, err := url.ParseRequestURI(apiUrl)
+  if err != nil {
     return 0, nil, err
-	}
+  }
 
   // Add requested Path to URL
-	u.Path = path
-	r, err := http.NewRequest(method, u.String(), strings.NewReader( data.Encode()) )
-	if err != nil {
+  u.Path = path
+  r, err := http.NewRequest(method, u.String(), strings.NewReader( data.Encode()) )
+  if err != nil {
     return 0, nil, err
-	}
+  }
 
   // Add CSRFPreventionToken to the request header if not it is not "GET"
   if method != "GET" {
@@ -163,10 +163,10 @@ func (c *Client) NewRequest(method, path string, data url.Values) (int, []byte, 
   r.AddCookie(&cookie)
 
   // Fetch data by requesting
-	resp, err := c.Do(r)
-	if err != nil {
+  resp, err := c.Do(r)
+  if err != nil {
     return resp.StatusCode, nil, err
-	}
+  }
   defer resp.Body.Close()
 
   // Raise error if response status is not 200
@@ -176,12 +176,11 @@ func (c *Client) NewRequest(method, path string, data url.Values) (int, []byte, 
 
   // Obtain body of the response and return it, caller has to know what to do next
   rbody, err := ioutil.ReadAll(resp.Body)
-  // Any Error reading body ?
-	if err != nil {
+  if err != nil {
     return resp.StatusCode, nil, err
-	} else {
+  } else {
     return resp.StatusCode, rbody, err
-	}
+  }
 }
 
 // convert bool to string "1" for true and "0" for false
@@ -238,13 +237,13 @@ func structCleanUp(v url.Values, wanted []string, unwanted []string) (values url
     }
     vv = v
   }
-/* extra cleanup entries with empty values  
+  /* extra cleanup entries with empty values  
   for key, val := range vv {
     if val[0] == "" {
       v.Del( key )
     }
   }
-*/
+  */
   return vv
 }
 
@@ -252,37 +251,37 @@ func structCleanUp(v url.Values, wanted []string, unwanted []string) (values url
 // source: https://gist.github.com/tonyhb/5819315
 // limitation: This func cannot deal with embedded structs.
 func structToMap(i interface{}, wanted []string, unwanted []string) (values url.Values) {
-//func structToMap(i interface{}) (values url.Values) {
-	values = url.Values{}
-	iVal := reflect.ValueOf(i).Elem()
-	typ := iVal.Type()
-	for j := 0; j < iVal.NumField(); j++ {
-		f := iVal.Field(j)
-		// You can use tags here...
-		// tag := typ.Field(j).Tag.Get("tagname")
-		// Convert each type into a string for the url.Values string map
-		var v string
-		switch f.Interface().(type) {
-		case []string:
+  //func structToMap(i interface{}) (values url.Values) {
+  values = url.Values{}
+  iVal := reflect.ValueOf(i).Elem()
+  typ := iVal.Type()
+  for j := 0; j < iVal.NumField(); j++ {
+    f := iVal.Field(j)
+    // You can use tags here...
+    // tag := typ.Field(j).Tag.Get("tagname")
+    // Convert each type into a string for the url.Values string map
+    var v string
+    switch f.Interface().(type) {
+    case []string:
       v = strings.Join(f.Interface().([]string), ",")
-		case int, int8, int16, int32, int64:
-			v = strconv.FormatInt(f.Int(), 10)
-		case uint, uint8, uint16, uint32, uint64:
-			v = strconv.FormatUint(f.Uint(), 10)
-		case float32:
-			v = strconv.FormatFloat(f.Float(), 'f', 4, 32)
-		case float64:
-			v = strconv.FormatFloat(f.Float(), 'f', 4, 64)
-		case []byte:
-			v = string(f.Bytes())
-		case string:
-			v = f.String()
-		}
+    case int, int8, int16, int32, int64:
+      v = strconv.FormatInt(f.Int(), 10)
+    case uint, uint8, uint16, uint32, uint64:
+      v = strconv.FormatUint(f.Uint(), 10)
+    case float32:
+      v = strconv.FormatFloat(f.Float(), 'f', 4, 32)
+    case float64:
+      v = strconv.FormatFloat(f.Float(), 'f', 4, 64)
+    case []byte:
+      v = string(f.Bytes())
+    case string:
+      v = f.String()
+    }
     // Append field only if its value defined
     if v != "" {
       values.Set(strings.ToLower(typ.Field(j).Name), v)
     }
-	}
+  }
   return structCleanUp(values, wanted, unwanted)
 }
 

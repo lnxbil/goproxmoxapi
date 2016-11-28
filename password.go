@@ -18,7 +18,7 @@ func (p Password) UpdatePassword(c *Client) error {
 
   _, _, err := c.NewRequest("PUT", "/api2/json/access/password", pbody )
   if err != nil {
-	  return err
+    return err
   }
   return err
 }
