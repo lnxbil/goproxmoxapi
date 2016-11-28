@@ -30,13 +30,13 @@ func TestDomainAPI(t *testing.T) {
 
   // Test AD creation
   dmn1 := goproxmoxapi.Domain{
-                               Realm: "tst",
-                               Type: "ad",
-                               Server1: "srv1",
-                               Domain: "example.com",
-                               Comment: "Test AD domain",
-                               Port: "389",
-                             }
+    Realm: "tst",
+    Type: "ad",
+    Server1: "srv1",
+    Domain: "example.com",
+    Comment: "Test AD domain",
+    Port: "389",
+  }
 
   err = dmn1.CreateDomain( c )
   if err != nil {
@@ -55,11 +55,11 @@ func TestDomainAPI(t *testing.T) {
 
   // test update of existing domain
   dmn2 := goproxmoxapi.Domain{
-                               Realm: "tst",
-                               Server2: "srv2",
-                               Port: "636",
-                               Secure: "1",
-                             }
+    Realm: "tst",
+    Server2: "srv2",
+    Port: "636",
+    Secure: "1",
+  }
   err = dmn2.UpdateDomain( c )
   if err != nil {
     t.Log( dmn2 )
@@ -86,15 +86,15 @@ func TestDomainAPI(t *testing.T) {
   */
   // Test LDAP auth domain creation
   ldap1 := goproxmoxapi.Domain{
-                               Realm: "tst",
-                               Type: "ldap",
-                               Server1: "srv1",
-                               Comment: "Test AD domain",
-                               Port: "389",
-                               Base_DN: "cn=users,dc=abc,dc=com",
-                               Bind_DN: "dc=abc,dc=com",
-                               User_Attr: "bindusername",
-                             }
+    Realm: "tst",
+    Type: "ldap",
+    Server1: "srv1",
+    Comment: "Test AD domain",
+    Port: "389",
+    Base_DN: "cn=users,dc=abc,dc=com",
+    Bind_DN: "dc=abc,dc=com",
+    User_Attr: "bindusername",
+  }
 
   err = ldap1.CreateDomain( c )
   if err != nil {
@@ -104,15 +104,15 @@ func TestDomainAPI(t *testing.T) {
 
   // test update of existing domain
   ldap2 := goproxmoxapi.Domain{
-                               Realm: "tst",
-                               Server2: "srv2",
-                               Comment: "Test AD domain Updated",
-                               Port: "636",
-                               Secure: "1",
-                               Base_DN: "cn=users,dc=example,dc=com",
-                               Bind_DN: "dc=example,dc=com",
-                               User_Attr: "bindusername",
-                             }
+    Realm: "tst",
+    Server2: "srv2",
+    Comment: "Test AD domain Updated",
+    Port: "636",
+    Secure: "1",
+    Base_DN: "cn=users,dc=example,dc=com",
+    Bind_DN: "dc=example,dc=com",
+    User_Attr: "bindusername",
+  }
   err = ldap2.UpdateDomain( c )
   if err != nil {
     t.Log( ldap2 )

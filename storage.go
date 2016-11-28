@@ -52,29 +52,29 @@ type Storage struct {
 // Helper function:
 // Returns a predefined list of wanted params depending on the type of the storage
 func (s Storage) genWantedStorageParams() []string {
-    commons := []string{ "storage", "type", "content", "disable", "format", "nodes" }
-    switch {
-    case s.Type == "dir":
-      return append( commons, "maxfiles", "shared", "path", "mkdir" )
-    case s.Type == "lvm":
-      return append( commons, "shared", "vgname", "base", "saferemove", "saferemove_throughput", "tagged_only" )
-    case s.Type == "lvmthin":
-      return append( commons, "vgname", "thinpool" )
-    case s.Type == "nfs":
-      return append( commons, "maxfiles", "export", "server", "options" )
-    case s.Type == "iscsi" || s.Type == "iscsidirect":
-      return append( commons, "portal", "target" )
-    case s.Type == "glusterfs":
-      return append( commons, "maxfiles", "server", "server2", "volume", "transport" )
-    case s.Type == "drbd" || s.Type == "rbd":
-      return append( commons, "redundancy", "monhost", "pool", "username", "authsupported", "krbd" )
+  commons := []string{ "storage", "type", "content", "disable", "format", "nodes" }
+  switch {
+  case s.Type == "dir":
+    return append( commons, "maxfiles", "shared", "path", "mkdir" )
+  case s.Type == "lvm":
+    return append( commons, "shared", "vgname", "base", "saferemove", "saferemove_throughput", "tagged_only" )
+  case s.Type == "lvmthin":
+    return append( commons, "vgname", "thinpool" )
+  case s.Type == "nfs":
+    return append( commons, "maxfiles", "export", "server", "options" )
+  case s.Type == "iscsi" || s.Type == "iscsidirect":
+    return append( commons, "portal", "target" )
+  case s.Type == "glusterfs":
+    return append( commons, "maxfiles", "server", "server2", "volume", "transport" )
+  case s.Type == "drbd" || s.Type == "rbd":
+    return append( commons, "redundancy", "monhost", "pool", "username", "authsupported", "krbd" )
     // TODO: Pure guess here, more research needed
-    case s.Type == "zfspool" || s.Type == "zfs":
-      return append( commons, "iscsiprovider", "nowritecache", "comstar_tg", "comstar_hg", "blocksize", "sparse" )
-    case s.Type == "sheepdog":
-      return []string{  }
-    }
-    return []string{}
+  case s.Type == "zfspool" || s.Type == "zfs":
+    return append( commons, "iscsiprovider", "nowritecache", "comstar_tg", "comstar_hg", "blocksize", "sparse" )
+  case s.Type == "sheepdog":
+    return []string{  }
+  }
+  return []string{}
 }
 
 // Create new Proxmox Storage
@@ -87,7 +87,7 @@ func (s Storage) CreateStorage(c *Client) error {
   // POST parameters
   pbody := structToMap(&s, s.genWantedStorageParams(), []string{} )
 
-	_, _, err := c.NewRequest("POST", "/api2/json/storage", pbody )
+  _, _, err := c.NewRequest("POST", "/api2/json/storage", pbody )
   if err != nil {
     return err
   }
@@ -135,27 +135,25 @@ func (s Storage) GetStorage(c *Client) (Storage, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/storage/" + s.Storage, nil )
   if err != nil {
-	  return st, err
+    return st, err
   } else {
     err = dataUnmarshal( rbody, &st )
 
-    // Any Error parsing json ?
-		return st, err
+    return st, err
   }
 }
 
 // Gets all defined Storages
 func GetAllStorages(c *Client) ([]Storage, error) {
-	st := make([]Storage, 0)
+  st := make([]Storage, 0)
 
   // GET parameters
-	_, rbody, err := c.NewRequest("GET", "/api2/json/storage", nil )
+  _, rbody, err := c.NewRequest("GET", "/api2/json/storage", nil )
   if err != nil {
-	  return st, err
+    return st, err
   } else {
     err = dataUnmarshal( rbody, &st )
 
-    // Any Error parsing json ?
-		return st, err
+    return st, err
   }
 }

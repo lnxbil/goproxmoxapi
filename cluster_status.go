@@ -18,11 +18,10 @@ func GetClusterStatus(c *Client) ([]ClusterNodeEntry, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/cluster/status", nil )
   if err != nil {
-	  return status, err
+    return status, err
   } else {
     err = dataUnmarshal( rbody, &status )
 
-    // Any Error parsing json ?
-		return status, err
+    return status, err
   }
 }

@@ -2,7 +2,7 @@ package goproxmoxapi
 
 // structure representing Proxmox Role
 type Role struct {
-	RoleId  string     // Required
+  RoleId  string     // Required
   Privs   string     // Optional
 }
 
@@ -16,7 +16,7 @@ func (r Role) CreateRole(c *Client) error {
   // POST parameters
   pbody := structToMap(&r, []string{}, []string{} )
 
-	_, _, err := c.NewRequest("POST", "/api2/json/access/roles", pbody )
+  _, _, err := c.NewRequest("POST", "/api2/json/access/roles", pbody )
   if err != nil {
     return err
   }
@@ -61,7 +61,7 @@ func (r Role) GetRole(c *Client) (Role, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/access/roles/" + r.RoleId, nil )
   if err != nil {
-	  return rl, err
+    return rl, err
   } else {
     var privs map[string]interface{}
     err = dataUnmarshal( rbody, &privs )
@@ -73,8 +73,7 @@ func (r Role) GetRole(c *Client) (Role, error) {
 
     rl.RoleId = r.RoleId
     rl.Privs = privsString
-    // Any Error parsing json ?
-		return rl, err
+    return rl, err
   }
 }
 
@@ -83,13 +82,12 @@ func GetAllRoles(c *Client) ([]Role, error) {
   rr := make([]Role, 0)
 
   // GET parameters
-	_, rbody, err := c.NewRequest("GET", "/api2/json/access/roles", nil )
+  _, rbody, err := c.NewRequest("GET", "/api2/json/access/roles", nil )
   if err != nil {
-	  return rr, err
+    return rr, err
   } else {
     err = dataUnmarshal( rbody, &rr )
 
-    // Any Error parsing json ?
-		return rr, err
+    return rr, err
   }
 }

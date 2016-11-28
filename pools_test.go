@@ -7,7 +7,7 @@ import (
 
 func TestPoolAPI(t *testing.T) {
   t.Parallel()
-	c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -24,11 +24,11 @@ func TestPoolAPI(t *testing.T) {
   }
 
   // test that we can fetch created pools
-	_, err = (goproxmoxapi.Pool{ PoolId: "pl3" }).GetPool(c)
+  _, err = (goproxmoxapi.Pool{ PoolId: "pl3" }).GetPool(c)
   if err != nil {
     t.Error(err)
   }
-	_, err = (goproxmoxapi.Pool{ PoolId: "pl4" }).GetPool(c)
+  _, err = (goproxmoxapi.Pool{ PoolId: "pl4" }).GetPool(c)
   if err != nil {
     t.Error(err)
   }
@@ -40,7 +40,7 @@ func TestPoolAPI(t *testing.T) {
   }
 
   // test the fact that pool updated
-	pl4, err := (goproxmoxapi.Pool{ PoolId: "pl4" }).GetPool(c)
+  pl4, err := (goproxmoxapi.Pool{ PoolId: "pl4" }).GetPool(c)
   if err != nil {
     t.Error(err)
   }
@@ -49,7 +49,7 @@ func TestPoolAPI(t *testing.T) {
   }
 
   // Test number of pools is at least 2
-	pp1, err := goproxmoxapi.GetAllPools(c)
+  pp1, err := goproxmoxapi.GetAllPools(c)
   if err != nil {
     t.Log(pp1)
     t.Error(err)
@@ -70,18 +70,18 @@ func TestPoolAPI(t *testing.T) {
   }
 
   // test the fact that both pools are removed
-	_, err = (goproxmoxapi.Pool{ PoolId: "pl3" }).GetPool(c)
+  _, err = (goproxmoxapi.Pool{ PoolId: "pl3" }).GetPool(c)
   if err == nil {
     t.Error(err)
   }
 
-	_, err = (goproxmoxapi.Pool{ PoolId: "pl4" }).GetPool(c)
+  _, err = (goproxmoxapi.Pool{ PoolId: "pl4" }).GetPool(c)
   if err == nil {
     t.Error(err)
   }
 
   // Test number of pools should be 2 less after removal of 2 pools
-	pp2, err := goproxmoxapi.GetAllPools(c)
+  pp2, err := goproxmoxapi.GetAllPools(c)
   if err != nil {
     t.Log(pp2)
     t.Error(err)

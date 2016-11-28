@@ -2,12 +2,12 @@ package goproxmoxapi
 
 // structure representing Proxmox User
 type User struct {
-	UserId    string   // Required - user@realm
+  UserId    string   // Required - user@realm
   Comment   string   // Optional
-	Email     string   // Optional
+  Email     string   // Optional
   Enable    int      // Optional - Enable the account (default). You can set this to '0' to disable the account.
   Expire    int      // Optional - Account expiration date (seconds since epoch). '1' means no expiration date.
-	FirstName string   // Optional
+  FirstName string   // Optional
   Groups    []string // Optional
   Keys      string   // Optional - Keys for two factor authentication (yubico).
   LastName  string   // Optional
@@ -24,7 +24,7 @@ func (u User) CreateUser(c *Client) error {
   // POST parameters
   pbody := structToMap(&u, []string{}, []string{} )
 
-	_, _, err := c.NewRequest("POST", "/api2/json/access/users", pbody )
+  _, _, err := c.NewRequest("POST", "/api2/json/access/users", pbody )
   if err != nil {
     return err
   }
@@ -69,26 +69,24 @@ func (u User) GetUser(c *Client) (User, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/access/users/" + u.UserId, nil )
   if err != nil {
-	  return ru, err
+    return ru, err
   } else {
     err = dataUnmarshal( rbody, &ru )
 
-    // Any Error parsing json ?
-		return ru, err
+    return ru, err
   }
 }
 
 // Gets all defined users
 func GetAllUsers(c *Client) ([]User, error) {
-	users := make([]User, 0)
+  users := make([]User, 0)
 
-	_, rbody, err := c.NewRequest("GET", "/api2/json/access/users", nil )
+  _, rbody, err := c.NewRequest("GET", "/api2/json/access/users", nil )
   if err != nil {
-	  return users, err
+    return users, err
   } else {
     err = dataUnmarshal( rbody, &users )
 
-    // Any Error parsing json ?
-		return users, err
+    return users, err
   }
 }

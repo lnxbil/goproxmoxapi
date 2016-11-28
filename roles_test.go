@@ -7,14 +7,14 @@ import (
 
 func TestRolesAPI(t *testing.T) {
   t.Parallel()
-	c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
   if err != nil {
     t.Log(c)
     t.Error(err)
   }
 
   // Test that we can get role (clone existing with different name)
-	xx, err := (goproxmoxapi.Role{ RoleId: "Administrator" }).GetRole(c)
+  xx, err := (goproxmoxapi.Role{ RoleId: "Administrator" }).GetRole(c)
   if err != nil {
     t.Log(xx)
     t.Error(err)
@@ -43,7 +43,7 @@ func TestRolesAPI(t *testing.T) {
     t.Error(err)
   }
 
-	rr2, err := goproxmoxapi.GetAllRoles(c)
+  rr2, err := goproxmoxapi.GetAllRoles(c)
   if err != nil {
     t.Log(rr2)
     t.Error(err)

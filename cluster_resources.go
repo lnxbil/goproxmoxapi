@@ -31,9 +31,9 @@ func GetClusterResources(c *Client) ([]ClusterResource, error) {
 
   _, rbody, err := c.NewRequest("GET", "/api2/json/cluster/resources", nil )
   if err != nil {
-	  return rc, err
+    return rc, err
   } else {
     err = dataUnmarshal( rbody, &rc )
-		return rc, err
+    return rc, err
   }
 }
