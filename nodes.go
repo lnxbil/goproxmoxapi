@@ -2,6 +2,7 @@ package goproxmoxapi
 
 import (
   "strconv"
+  "strings"
 )
 
 // structure representing Proxmox Node
@@ -86,26 +87,100 @@ func NewLxcConfig(obj *LxcConfig) *LxcConfig {
   return obj
 }
 
+//TODO Lxc structure is almost a duplicate to LxcCtStatus - something related to perl backend API incosnistent results being returned
 type Lxc struct {
-  Cpu        int      //  0
-  Cpus       string   //  "1"
-  Disk       int      //  0
-  Diskread   int      //  0
-  Diskwrite  int      //  0
-  Lock       string   //  ""
-  Maxdisk    float64  //  8589934592
-  Maxmem     float64  //  536870912
-  Maxswap    float64  //  536870912
-  Mem        int      //  0
-  Name       string   //  "100"
-  Netin      int      //  0
-  Netout     int      //  0
-  Status     string   //  "stopped"
-  Swap       int      //  0
-  Template   string   //  ""
-  Type       string   //  "lxc"
-  Uptime     float64  //  0
-  Vmid       string   //  "100"
+  Cpu        float64 //  0
+  //Cpus       string  //  "1"
+  Disk       float64 //  0
+  DiskRead   float64  //  0
+  DiskWrite  float64  //  0
+  Lock       string  //  ""
+  Maxdisk    float64 //  8589934592
+  Maxmem     float64 //  536870912
+  Maxswap    float64 //  536870912
+  Mem        float64  //  0
+  Name       string  //  "100"
+  Netin      float64 //  0
+  Netout     float64 //  0
+  Status     string  //  "stopped"
+  Swap       float64 //  0
+  Template   string  //  ""
+  Type       string  //  "lxc"
+  UpTime     float64 //  0
+  Vmid       string  //  "100"
+}
+
+type HA struct {
+  Managed int // 0
+}
+
+type LxcCtStatus struct {
+  Cpu       float64 // 0
+  //  Cpus      string // "1" --- extremely unstable - returns number and string values - Disabling for now
+  Disk      float64 // 0
+  DiskRead  float64 // 0
+  DiskWrite float64 // 0
+  HA                // structure
+  Lock      string  // ""
+  MaxDisk   float64 // 8589934592
+  MaxMem    float64 // 536870912
+  MaxSwap   float64 // 536870912
+  Mem       float64 // 0
+  Name      string  // "100"
+  Netin     float64 // 0
+  Netout    float64 // 0
+  Status    string  // "stopped"
+  Swap      float64 // 0
+  Template  string  // ""
+  Type      string  // "lxc"
+  UpTime    float64 // 0
+}
+
+// Get virtual machine status.
+//   valid operations for LXC: start | stop
+func (ct LxcConfig) LxcOp(c *Client, op string) (string, error) {
+  lxctsk := ""
+  // check definition of required fields
+  if ct.Node == "" {
+    return lxctsk, &errorString{ "Node name (Node.Node) is required to obtain container status", }
+  }
+  if ct.VMId <= 0 {
+    return lxctsk, &errorString{ "VMId is required to obtain container status", }
+  }
+  // Check if operation is valid
+  lop := strings.ToLower( op )
+  if lop != "start" && lop != "stop" {
+    return lxctsk, &errorString{ "Operation: " + lop + " is invalid.", }
+  }
+  _, rbody, err := c.NewRequest("POST", "/api2/json/nodes/" + ct.Node + "/lxc/" + strconv.Itoa( ct.VMId ) + "/status/" + lop, nil )
+  if err != nil {
+    return lxctsk, err
+  } else {
+    err = dataUnmarshal( rbody, &lxctsk )
+
+    return lxctsk, err
+  }
+}
+
+// Get virtual machine status.
+func (ct LxcConfig) GetLxcStatus(c *Client) (LxcCtStatus, error) {
+  lxcs := LxcCtStatus{}
+  // check definition of required fields
+  if ct.Node == "" {
+    return lxcs, &errorString{ "Node name (Node.Node) is required to obtain container status", }
+  }
+  if ct.VMId <= 0 {
+    return lxcs, &errorString{ "VMId is required to obtain container status", }
+  }
+
+  _, rbody, err := c.NewRequest("GET", "/api2/json/nodes/" + ct.Node + "/lxc/" + strconv.Itoa( ct.VMId ) + "/status/current", nil )
+  if err != nil {
+    return lxcs, err
+  } else {
+    err = dataUnmarshal( rbody, &lxcs )
+
+    return lxcs, err
+  }
 }
 
 // Destroy the container (also delete all uses files). Returns Task PuId.
@@ -115,7 +190,7 @@ func (ct LxcConfig) DeleteLxc(c *Client) (string, error) {
   if ct.Node == "" {
     return tskinfo, &errorString{ "Node name (Node.Node) is required to destroy container", }
   }
-  if ct.VMId == 0 {
+  if ct.VMId <= 0 {
     return tskinfo, &errorString{ "VMId is required to destroy container", }
   }
 
@@ -148,7 +223,6 @@ func (ct LxcConfig) CreateLxc(c *Client) (string, error) {
 
     return tskinfo, err
   }
-
 }
 
 // Returns all Lxc containers per node

@@ -19,6 +19,15 @@ func TestClusterStatusAPI(t *testing.T) {
     t.Error(err)
   }
   if len(tasks) < 1 {
-    t.Error("We have at least 1 node in cluster, record number must not be less than 1")
+    t.Error("Record number must not be less than 1")
+  }
+
+  pts := goproxmoxapi.TaskEntry{ Node: "pve" }
+  ftasks, err := pts.GetFinishedTasks(c)
+  if err != nil {
+    t.Error(err)
+  }
+  if len(ftasks) < 1 {
+    t.Error("Record number must not be less than 1")
   }
 }
