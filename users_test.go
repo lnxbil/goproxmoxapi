@@ -6,8 +6,6 @@ import (
 )
 
 func TestUserAPI(t *testing.T) {
-  //t.Parallel()
-
   // Establish new session
   c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
   if err != nil {

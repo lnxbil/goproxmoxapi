@@ -97,6 +97,17 @@ func TestNodesAPI(t *testing.T) {
     t.Log( tsts.UpId )
     t.Error( err )
   } else {
+    // Test that newly created container is down
+    cts, err := ct1.GetLxcStatus( c )
+    if cts.Type != "lxc" {
+      t.Log( cts )
+      t.Error("Unexpected type of container")
+    }
+    if err != nil {
+      t.Error(err)
+    }
+
+    // Delete
     ss, err = ct1.DeleteLxc( c )
     if err != nil {
       t.Error(err)
