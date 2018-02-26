@@ -7,14 +7,14 @@ type Storage struct {
   Type                  string // Common: Storage type (dir|drbd|glusterfs|iscsi|iscsidirect|lvm|lvmthin|nfs|rbd|sheepdog|zfs|zfspool)
   Content               string // Common: Allowed content types. NOTE: the value 'rootdir' is used for Containers, and value 'images' for VMs. (images,rootdir; vztmpl,iso,backup)
   Disable               int    // Common: Flag to disable the storage. (boolean)
-  MaxFiles              string // Common: Maximal number of backup files per VM. Use '0' for unlimted.
+  MaxFiles              int    // Common: Maximal number of backup files per VM. Use '0' for unlimted.
   Shared                int    // Common: optional - Mark storage as shared. (boolean)
   Format                string // Common: optional - Default image format.
   Nodes                 string // Common: Node list
   // Directory
   //   'Shared' is not listed for this type
   Path                  string // Dir: File system path.
-  MkDir                 string // Dir: Create the directory if it doesn't exist. (boolean, default: true)
+  MkDir                 int    // Dir: Create the directory if it doesn't exist. (boolean, default: true)
   // Glusterfs
   Volume                string // Glusterfs: Glusterfs Volume.
   Server2               string // Glusterfs: Backup volfile server IP or DNS name. Requires 'server'
