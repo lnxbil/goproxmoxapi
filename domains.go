@@ -9,9 +9,9 @@ type Domain struct {
   // LDAP & AD
   Server1   string  // optional - Server IP address (or DNS name)
   Server2   string  // optional - Fallback Server IP address (or DNS name)
-  Secure    string     // optional - Use secure LDAPS protocol.
+  Secure    int     // optional - Use secure LDAPS protocol.
   Default   int     // optional - Use this as default realm
-  Port      string  // optional - Server port.
+  Port      int     // optional - Server port.
   TFA       string  // optional - Use Two-factor authentication.
   // AD
   Domain    string  // optional - AD domain name
