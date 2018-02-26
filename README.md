@@ -5,3 +5,7 @@
 # How to get tests to work
 
 see [`TESTING.md`](TESTING.md)
+
+# Other stuff:
+
+* [PVE API documentation](https://pve.proxmox.com/pve-docs/api-viewer/index.html)
