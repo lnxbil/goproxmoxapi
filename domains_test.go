@@ -9,7 +9,7 @@ func TestDomainAPI(t *testing.T) {
   t.Parallel()
 
   // Establish new session
-  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -23,7 +23,7 @@ func TestDomainAPI(t *testing.T) {
   }
 
   // Test getting one domain
-  _, err = (goproxmoxapi.Domain{ Realm: "pve" }).GetDomain( c )
+  _, err = (goproxmoxapi.Domain{Realm: goproxmoxapi.GetProxmoxRealm()}).GetDomain(c)
   if err != nil {
     t.Error(err)
   }
@@ -35,7 +35,7 @@ func TestDomainAPI(t *testing.T) {
     Server1: "srv1",
     Domain: "example.com",
     Comment: "Test AD domain",
-    Port: "389",
+    Port: 389,
   }
 
   err = dmn1.CreateDomain( c )
@@ -49,7 +49,7 @@ func TestDomainAPI(t *testing.T) {
   if err != nil {
     t.Error(err)
   }
-  if dmn11.Port != "389" {
+  if dmn11.Port != 389 {
     t.Error("Wrong port number obtained after creation")
   }
 
@@ -57,8 +57,8 @@ func TestDomainAPI(t *testing.T) {
   dmn2 := goproxmoxapi.Domain{
     Realm: "tst",
     Server2: "srv2",
-    Port: "636",
-    Secure: "1",
+    Port: 636,
+    Secure: 1,
   }
   err = dmn2.UpdateDomain( c )
   if err != nil {
@@ -71,7 +71,7 @@ func TestDomainAPI(t *testing.T) {
   if err != nil {
     t.Error(err)
   }
-  if dmn12.Port != "636" {
+  if dmn12.Port != 636 {
     t.Error("Wrong port number obtained after update")
   }
 
@@ -90,7 +90,7 @@ func TestDomainAPI(t *testing.T) {
     Type: "ldap",
     Server1: "srv1",
     Comment: "Test AD domain",
-    Port: "389",
+    Port: 389,
     Base_DN: "cn=users,dc=abc,dc=com",
     Bind_DN: "dc=abc,dc=com",
     User_Attr: "bindusername",
@@ -107,8 +107,8 @@ func TestDomainAPI(t *testing.T) {
     Realm: "tst",
     Server2: "srv2",
     Comment: "Test AD domain Updated",
-    Port: "636",
-    Secure: "1",
+    Port: 636,
+    Secure: 1,
     Base_DN: "cn=users,dc=example,dc=com",
     Bind_DN: "dc=example,dc=com",
     User_Attr: "bindusername",

@@ -56,3 +56,9 @@ func GetProxmoxRealm() string {
 	i := GetProxmoxConfigInstance()
 	return i.Realm
 }
+
+// GetProxmoxHost return the defined test host
+func GetProxmoxHost() string {
+	i := GetProxmoxConfigInstance()
+	return i.Host
+}

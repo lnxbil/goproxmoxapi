@@ -6,7 +6,7 @@ import (
 )
 
 func TestPasswordAPI(t *testing.T) {
-  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -37,7 +37,7 @@ func TestPasswordAPI(t *testing.T) {
   }
 
   // Test connection with initial pass
-  ctu1, err := goproxmoxapi.New("usertotestpass", tu1.Password, "pve", "10.255.0.5")
+  ctu1, err := goproxmoxapi.New("usertotestpass", tu1.Password, "pve", goproxmoxapi.GetProxmoxHost())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -54,17 +54,15 @@ func TestPasswordAPI(t *testing.T) {
   }
 
   // Test connection with new pass
-  cpu1, err := goproxmoxapi.New("usertotestpass", pu1.Password, "pve", "10.255.0.5")
+  cpu1, err := goproxmoxapi.New("usertotestpass", pu1.Password, "pve", goproxmoxapi.GetProxmoxHost())
   if err != nil {
     t.Log(c)
     t.Error(err)
   }
-  pvever, err := goproxmoxapi.GetVersion(cpu1)
+
+  _, err = goproxmoxapi.GetVersion(cpu1)
   if err != nil {
     t.Error(err)
-  }
-  if pvever.Version != "4.3" {
-    t.Error("Should run this test against pve version 4.3")
   }
 
   // Delete User

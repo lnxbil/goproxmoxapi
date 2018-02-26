@@ -3,6 +3,7 @@ package goproxmoxapi_test
 import (
   "testing"
   "time"
+  "strings"
   "github.com/ncerny/goproxmoxapi"
 )
 
@@ -10,7 +11,7 @@ func TestNodesAPI(t *testing.T) {
   t.Parallel()
 
   // Establish new session
-  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -39,21 +40,21 @@ func TestNodesAPI(t *testing.T) {
   //    pvesh create /nodes/pve/lxc -vmid 101 -hostname test -password qwerty12 \
   //      -storage local-lvm -ostemplate local:vztmpl/centos-7-default_20160205_amd64.tar.xz -memory 512 -swap 512
   ct1 := goproxmoxapi.NewLxcConfig( &goproxmoxapi.LxcConfig{
-    Node: "pve",
+    Node: goproxmoxapi.GetProxmoxNode(),
     VMId: 300,
     Password: "qwerty12",
     Storage: "local-lvm",
-    OsTemplate: "local:vztmpl/centos-7-default_20160205_amd64.tar.xz",
-    //    Pool       
-    //    Onboot     
-    //    Startup    
+    OsTemplate: "local:vztmpl/alpine-3.5-default_20170504_amd64.tar.xz",
+    //    Pool
+    //    Onboot
+    //    Startup
     //    Template: "",
     Description: "Test LXC Container",
     //RootFS: "local-lvm,size=8G",
     Arch: "amd64",
-    OsType: "centos",
-    Memory: 1024,
-    Swap: 512,
+    OsType: "alpine",
+    Memory: 128,
+    Swap: 128,
     HostName: "testct",
     SearchDomain: "example.com",
     NameServer: "4.4.4.4,10.255.0.5",
@@ -68,7 +69,7 @@ func TestNodesAPI(t *testing.T) {
 
   // Wait for create operation to finish (Using Proxmox TaskStatus) and only then destroy container
   ch1 := make(chan int)
-  pts := goproxmoxapi.TaskEntry{ Node: "pve", UpId: ss }
+  pts := goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode(), UpId: ss}
   tsts := goproxmoxapi.TaskEntry{}
   go func() {
     for tsts, err = pts.GetTaskStatus( c ); tsts.Status != "stopped"; {
@@ -86,7 +87,7 @@ func TestNodesAPI(t *testing.T) {
 
   // test that we can obtain a log entries for a given task
   lgs, err := pts.GetTaskLogEntries( c )
-  if err != nil || len(lgs) != 22 {
+  if err != nil || ! strings.Contains(lgs[len(lgs)-1].T, "TASK OK") {
     t.Log( lgs )
     t.Error(err)
   }
@@ -116,7 +117,7 @@ func TestNodesAPI(t *testing.T) {
 
   // Wait for Delete Container task to finish and only than return
   ch2 := make(chan int)
-  pts = goproxmoxapi.TaskEntry{ Node: "pve", UpId: ss }
+  pts = goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode(), UpId: ss}
   tsts = goproxmoxapi.TaskEntry{}
   go func() {
     for tsts, err = pts.GetTaskStatus( c ); tsts.Status != "stopped"; {

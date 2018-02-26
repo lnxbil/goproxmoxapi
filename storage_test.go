@@ -7,7 +7,7 @@ import (
 
 func TestStorageAPI(t *testing.T) {
   t.Parallel()
-  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -19,8 +19,8 @@ func TestStorageAPI(t *testing.T) {
     Type: "dir",
     Content: "backup",
     Path: "/var/lib/backuptst",
-    MkDir: "1",
-    MaxFiles: "5",
+    MkDir: 1,
+    MaxFiles: 5,
   }).CreateStorage(c)
   if err != nil {
     t.Error(err)
@@ -32,7 +32,7 @@ func TestStorageAPI(t *testing.T) {
     t.Error(err)
   }
   // Tes we can update it
-  st1.MaxFiles = "6"
+  st1.MaxFiles = 6
   err = st1.UpdateStorage(c)
   if err != nil {
     t.Error(err)
@@ -41,7 +41,7 @@ func TestStorageAPI(t *testing.T) {
   if err != nil {
     t.Error(err)
   }
-  if st2.MaxFiles != "6" {
+  if st2.MaxFiles != 6 {
     t.Error("Update of the storage failed")
   }
 

@@ -5,4 +5,8 @@ In this Proxmox VE instance, you need an user with admin priviledges, which logi
 has to go in to the configuration file `testconfig.json`, for an example, please have
 a look at `testconfig.json.example`.
 
-There has to be one container present with ID `100`.
+You need the following:
+
+* one container present with ID `100`
+* Alpine Linux container template `alpine-3.5-default_20170504_amd64.tar.xz`
+* two groups `gp1` and `gp2`.

@@ -7,7 +7,7 @@ import (
 
 func TestRolesAPI(t *testing.T) {
   t.Parallel()
-  c, err := goproxmoxapi.New("root", "P@ssw0rd", "pam", "10.255.0.5")
+  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
