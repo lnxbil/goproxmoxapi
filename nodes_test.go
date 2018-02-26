@@ -4,7 +4,7 @@ import (
   "testing"
   "time"
   "strings"
-  "github.com/ncerny/goproxmoxapi"
+  "github.com/lnxbil/goproxmoxapi"
 )
 
 func TestNodesAPI(t *testing.T) {

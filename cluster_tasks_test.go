@@ -2,7 +2,7 @@ package goproxmoxapi_test
 
 import (
   "testing"
-  "github.com/ncerny/goproxmoxapi"
+  "github.com/lnxbil/goproxmoxapi"
 )
 
 func TestRecentTasksAPI(t *testing.T) {

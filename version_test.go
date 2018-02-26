@@ -3,7 +3,7 @@ package goproxmoxapi_test
 import (
   "strings"
   "testing"
-  "github.com/ncerny/goproxmoxapi"
+  "github.com/lnxbil/goproxmoxapi"
 )
 
 func TestVersionAPI(t *testing.T) {
