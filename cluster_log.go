@@ -8,7 +8,7 @@ type LogEntry struct {
   Pri  int    // 6
   Tag  string // "pvedaemon"
   Time float64    // 1479459397
-  UID  int    // 5327
+  UID  string // 5327
   User string // "root@pam"
 }
 
