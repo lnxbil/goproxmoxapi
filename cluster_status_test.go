@@ -2,7 +2,7 @@ package goproxmoxapi_test
 
 import (
   "testing"
-  "github.com/isindir/goproxmoxapi"
+  "github.com/ncerny/goproxmoxapi"
 )
 
 func TestClusterStatusAPI(t *testing.T) {

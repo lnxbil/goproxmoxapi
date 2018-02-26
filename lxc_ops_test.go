@@ -3,7 +3,7 @@ package goproxmoxapi_test
 import (
   "testing"
   "time"
-  "github.com/isindir/goproxmoxapi"
+  "github.com/ncerny/goproxmoxapi"
 )
 
 func TestLxcOpAPI(t *testing.T) {
