@@ -7,7 +7,7 @@ import (
 
 func TestGroupAPI(t *testing.T) {
   t.Parallel()
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)

@@ -7,7 +7,7 @@ import (
 
 func TestClusterStatusAPI(t *testing.T) {
   t.Parallel()
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -22,7 +22,7 @@ func TestClusterStatusAPI(t *testing.T) {
     t.Error("Record number must not be less than 1")
   }
 
-  pts := goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode()}
+  pts := goproxmoxapi.TaskEntry{Node: GetProxmoxNode()}
   ftasks, err := pts.GetFinishedTasks(c)
   if err != nil {
     t.Error(err)

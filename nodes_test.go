@@ -11,7 +11,7 @@ func TestNodesAPI(t *testing.T) {
   t.Parallel()
 
   // Establish new session
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -40,7 +40,7 @@ func TestNodesAPI(t *testing.T) {
   //    pvesh create /nodes/pve/lxc -vmid 101 -hostname test -password qwerty12 \
   //      -storage local-lvm -ostemplate local:vztmpl/centos-7-default_20160205_amd64.tar.xz -memory 512 -swap 512
   ct1 := goproxmoxapi.NewLxcConfig( &goproxmoxapi.LxcConfig{
-    Node: goproxmoxapi.GetProxmoxNode(),
+    Node: GetProxmoxNode(),
     VMId: 300,
     Password: "qwerty12",
     Storage: "local-lvm",
@@ -69,7 +69,7 @@ func TestNodesAPI(t *testing.T) {
 
   // Wait for create operation to finish (Using Proxmox TaskStatus) and only then destroy container
   ch1 := make(chan int)
-  pts := goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode(), UpId: ss}
+  pts := goproxmoxapi.TaskEntry{Node: GetProxmoxNode(), UpId: ss}
   tsts := goproxmoxapi.TaskEntry{}
   go func() {
     for tsts, err = pts.GetTaskStatus( c ); tsts.Status != "stopped"; {
@@ -117,7 +117,7 @@ func TestNodesAPI(t *testing.T) {
 
   // Wait for Delete Container task to finish and only than return
   ch2 := make(chan int)
-  pts = goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode(), UpId: ss}
+  pts = goproxmoxapi.TaskEntry{Node: GetProxmoxNode(), UpId: ss}
   tsts = goproxmoxapi.TaskEntry{}
   go func() {
     for tsts, err = pts.GetTaskStatus( c ); tsts.Status != "stopped"; {

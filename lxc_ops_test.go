@@ -10,7 +10,7 @@ func TestLxcOpAPI(t *testing.T) {
   t.Parallel()
 
   // Establish new session
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -18,7 +18,7 @@ func TestLxcOpAPI(t *testing.T) {
 
   // define basic test lxc ct config for Lxc operations
   ct1 := goproxmoxapi.NewLxcConfig( &goproxmoxapi.LxcConfig{
-    Node: goproxmoxapi.GetProxmoxNode(),
+    Node: GetProxmoxNode(),
     VMId: 100,
   })
 
@@ -46,7 +46,7 @@ func TestLxcOpAPI(t *testing.T) {
 
   // Wait for create operation to finish (Using Proxmox TaskStatus) and only then destroy container
   ch1 := make(chan int)
-  pts := goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode(), UpId: ss}
+  pts := goproxmoxapi.TaskEntry{Node: GetProxmoxNode(), UpId: ss}
   tsts := goproxmoxapi.TaskEntry{}
   go func() {
     for tsts, err = pts.GetTaskStatus( c ); tsts.Status != "running"; {
@@ -70,7 +70,7 @@ func TestLxcOpAPI(t *testing.T) {
 
   // Wait for create operation to finish (Using Proxmox TaskStatus) and only then destroy container
   ch1 = make(chan int)
-  pts = goproxmoxapi.TaskEntry{Node: goproxmoxapi.GetProxmoxNode(), UpId: ss}
+  pts = goproxmoxapi.TaskEntry{Node: GetProxmoxNode(), UpId: ss}
   go func() {
     for tsts, err = pts.GetTaskStatus( c ); tsts.Status != "stopped"; {
       if err != nil {

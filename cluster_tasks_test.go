@@ -6,7 +6,7 @@ import (
 )
 
 func TestRecentTasksAPI(t *testing.T) {
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)

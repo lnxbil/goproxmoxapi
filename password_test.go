@@ -6,7 +6,7 @@ import (
 )
 
 func TestPasswordAPI(t *testing.T) {
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -37,7 +37,7 @@ func TestPasswordAPI(t *testing.T) {
   }
 
   // Test connection with initial pass
-  ctu1, err := goproxmoxapi.New("usertotestpass", tu1.Password, "pve", goproxmoxapi.GetProxmoxHost())
+  ctu1, err := goproxmoxapi.New("usertotestpass", tu1.Password, "pve", GetProxmoxHost())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -54,7 +54,7 @@ func TestPasswordAPI(t *testing.T) {
   }
 
   // Test connection with new pass
-  cpu1, err := goproxmoxapi.New("usertotestpass", pu1.Password, "pve", goproxmoxapi.GetProxmoxHost())
+  cpu1, err := goproxmoxapi.New("usertotestpass", pu1.Password, "pve", GetProxmoxHost())
   if err != nil {
     t.Log(c)
     t.Error(err)
