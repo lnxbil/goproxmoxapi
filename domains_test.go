@@ -9,7 +9,7 @@ func TestDomainAPI(t *testing.T) {
   t.Parallel()
 
   // Establish new session
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
@@ -23,7 +23,7 @@ func TestDomainAPI(t *testing.T) {
   }
 
   // Test getting one domain
-  _, err = (goproxmoxapi.Domain{Realm: goproxmoxapi.GetProxmoxRealm()}).GetDomain(c)
+  _, err = (goproxmoxapi.Domain{Realm: GetProxmoxRealm()}).GetDomain(c)
   if err != nil {
     t.Error(err)
   }

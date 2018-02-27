@@ -7,7 +7,7 @@ import (
 
 func TestUserAPI(t *testing.T) {
   // Establish new session
-  c, err := goproxmoxapi.New(goproxmoxapi.GetProxmoxAccess())
+  c, err := goproxmoxapi.New(GetProxmoxAccess())
   if err != nil {
     t.Log(c)
     t.Error(err)
